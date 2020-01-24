@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Navbar } from 'reactstrap';
 import { BrowserRouter,Switch, Route,withRouter } from 'react-router-dom';
 import NavNav from './nav';
-import WorkOrders from './WorkOrders';
+import Disconnects from './disconnects';
+import Home from './Home';
 
 //import { actions } from 'react-redux-form';
 //import { TransitionGroup, CSSTransition } from 'react-transition-group';
@@ -20,8 +21,8 @@ class Main extends Component{
                 </Navbar>
                 <BrowserRouter>
                     <Switch>
-                        <Route path="/" component={WorkOrders} />
-                        <Route path="/?:pdf" render={WorkOrders} />
+                        <Route path="/disconnects" component={Disconnects} />
+                        <Route path="/" render={Home} />
                     </Switch>
                 </BrowserRouter>
             </div>
