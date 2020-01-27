@@ -39,7 +39,7 @@ class Disconnects extends Component {
     InitMap(e) {
         e.preventDefault();
         this.toggleLoading();
-        this.cleanEsri();
+        //this.cleanEsri();
 
         console.log('in change function '+this.state.selectedState);
         this.getSB();
