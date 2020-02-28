@@ -1,8 +1,10 @@
 import React, { Component} from 'react';
 import fetch from 'isomorphic-fetch';
-import { Button, Form, Table, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import {  ButtonGroup, Button, Form, Table, Breadcrumb, BreadcrumbItem,UncontrolledTooltip   } from 'reactstrap';
 import LoadingSpinner from './LoadingSpinner';
 import * as urls from '../urlsConfig';
+import { WebMapView } from './WebMapViewer';
+
 
 class Disconnects extends Component {
     constructor(props) {
@@ -19,12 +21,14 @@ class Disconnects extends Component {
           springbrookDisconnects:[],
           returnedDisconnects:[],
           loading: false,
-
+          esriEndpoint:'',
+          list:true,
         };
         this.toggleDropDown = this.toggleDropDown.bind(this);
         this.toggleLoading = this.toggleLoading.bind(this);
 
       }
+
     toggleLoading(){
         this.setState({loading:!this.state.loading})
     }
@@ -33,10 +37,10 @@ class Disconnects extends Component {
     }
     
     componentDidMount(){
-      
+      this.getFromEsri();
     }
     
-    InitMap(e) {
+    InitMap(e,curCall) {
         e.preventDefault();
         this.toggleLoading();
         //this.cleanEsri();
@@ -57,6 +61,7 @@ class Disconnects extends Component {
             } else {
             var error = new Error(response.statusText);
             error.response = response;
+            this.setState({loading:false});
             throw error;
             }
         })
@@ -71,41 +76,21 @@ class Disconnects extends Component {
                 
                 tempdata.map(val=>this.state.springbrookDisconnects.push(val.value));
                 this.setState({ springbrookDisconnects:this.state.springbrookDisconnects})
+            
+                
             }
-            this.sendToEsri();    
+            this.sendToEsri(); 
         })
            .catch(console.log);
            
         return false
     }
-    cleanEsri(){
-        console.log("in clean esri");
-        fetch(this.state.esriURL, {
-            method:"DELETE",
-            headers: {
-                'Content-Type': 'application/json'
-              },
-        }).then(function(response) {
-            if (response.ok) {
-            return response
-            } else {
-            var error = new Error(response.statusText);
-            error.response = response;
-            throw error;
-            }
-        })
-        .then(res => res.json())
-        .then((data) => {
-            console.log(data);
-            
-            })
-           .catch(console.log);
-    }
-
+   
     sendToEsri(){
-        var meters={"meters":this.state.springbrookDisconnects.slice(0,1)};
+        var meters={"meters":this.state.springbrookDisconnects};
         console.log(meters);
-        fetch(this.state.esriURL+"init", {
+        fetch(this.state.esriURL+'init', {
+            //mode:"no-cors",
             method:"POST",
             body:JSON.stringify(meters),
             headers: {
@@ -117,6 +102,7 @@ class Disconnects extends Component {
             } else {
             var error = new Error(response.statusText);
             error.response = response;
+            this.setState({loading:false});
             throw error;
             }
         })
@@ -128,7 +114,9 @@ class Disconnects extends Component {
             }else{
                 console.log(JSON.stringify(data));
             }
-            this.getFromEsri();
+           
+            }).then(()=>{
+                this.getFromEsri();
             })
            .catch(console.log);
     }
@@ -146,6 +134,7 @@ class Disconnects extends Component {
             } else {
             var error = new Error(response.statusText);
             error.response = response;
+            this.setState({loading:false});
             throw error;
             }
         })
@@ -154,6 +143,7 @@ class Disconnects extends Component {
             console.log(data);
             if(data.length===0){
                 alert("There are no current disconnects on the map");
+                this.setState({loading:false});
             }else{
                 this.setState({returnedDisconnects:[]});
                 console.log(data);
@@ -170,9 +160,9 @@ class Disconnects extends Component {
             this.state.returnedDisconnects.map((item)=>
                 <tr key={item.attributes.FACILITYID}>
                     <td>{item.attributes.cust_name}</td>
-                    <td>{item.attributes.street_add}</td>
+                    <td>{item.attributes.ADDRESS}</td>
                     <td>{item.attributes.FACILITYID}</td>
-                    <td>{item.attributes.total_amou}</td>
+                    <td>{item.attributes.total_amount_due}</td>
                 </tr>
             )
     )
@@ -189,26 +179,49 @@ class Disconnects extends Component {
                 </header>
                 <Form>
                     
-                    <Button type="submit" onClick={e=>this.InitMap(e)}>Initialize Map</Button>
-
+                    <Button type="submit" onClick={e=>this.InitMap(e)}>Update Map</Button>
+                    <Button><a target="_blank" href='arcgis-collector://?itemID=3b603af45ac34d0091ea9c011fe230d7'>
+                        Open collector
+                        </a>
+                    </Button>
                 </Form>
+                
                 <div>
-                    <h4>Disconnects</h4>  
-                        {this.state.loading ? <LoadingSpinner /> : 
-                            <Table bordered dark hover>
-                                <thead>
-                                    <tr>
-                                        <td>Name</td>
-                                        <td>Address</td>
-                                        <td>Meter #</td>
-                                        <td>Balance</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {disconnects}
-                                </tbody>
-                            </Table>
-                        }  
+                <ButtonGroup className="toggleButtons">
+                    <Button id="listTooltip" onClick={e=>this.setState({list:true})}><i class="fa fa-list fa-lg"></i></Button>
+                    <UncontrolledTooltip  placement="top" target="listTooltip">List View</UncontrolledTooltip >
+                    <Button id="mapTooltip" onClick={e=>this.setState({list:false})}><i class="fa fa-map fa-lg"></i></Button>
+                    <UncontrolledTooltip  placement="top" target="mapTooltip">Map View</UncontrolledTooltip >
+                </ButtonGroup>
+                    {
+                        this.state.list ? 
+                        <Table bordered dark hover>
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Address</td>
+                                    <td>Meter #</td>
+                                    <td>Balance</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {disconnects}
+                            </tbody>
+                        </Table> :
+                        <div>
+                            {
+                                this.state.loading ? <LoadingSpinner /> : 
+                                
+                                <iframe className="webmap" frameborder="0" scrolling="yes" marginheight="0" marginwidth="0" 
+                                    src="https://arcgis.com/apps/View/index.html?appid=62042b7e3c1e42918629aac10cbcca59">
+                                    
+                                </iframe>
+
+                                //<WebMapView />
+                                
+                            }  
+                        </div>
+                    }
                 </div>
                 
             </div>
