@@ -40,16 +40,16 @@ class Disconnects extends Component {
       this.getFromEsri();
     }
     
-    InitMap(e,curCall) {
+    InitMap(e,refresh) {
         e.preventDefault();
         this.toggleLoading();
         //this.cleanEsri();
 
         console.log('in change function '+this.state.selectedState);
-        this.getSB();
+        this.getSB(refresh);
         
     }
-    getSB(){
+    getSB(refresh){
         fetch(this.state.baseURL, {
             method:"GET",
             headers:{
@@ -79,17 +79,22 @@ class Disconnects extends Component {
             
                 
             }
-            this.sendToEsri(); 
+            this.sendToEsri(refresh); 
         })
            .catch(console.log);
            
         return false
     }
    
-    sendToEsri(){
+    sendToEsri(refresh){
         var meters={"meters":this.state.springbrookDisconnects};
         console.log(meters);
-        fetch(this.state.esriURL+'init', {
+        if(refresh){
+            var url = this.state.esriURL+'refresh';
+        }else{
+            var url = this.state.esriURL+'init';
+        }
+        fetch(url, {
             //mode:"no-cors",
             method:"POST",
             body:JSON.stringify(meters),
@@ -177,14 +182,15 @@ class Disconnects extends Component {
                 <header >
                     <h1>Disconnects</h1>
                 </header>
-                <Form>
+                <ButtonGroup>
                     
-                    <Button type="submit" onClick={e=>this.InitMap(e)}>Update Map</Button>
+                    <Button type="submit" onClick={e=>this.InitMap(e,false)}>Initialize Map</Button>
+                    <Button type="submit" onClick={e=>this.InitMap(e,true)}>Refresh Map</Button>
                     <Button><a target="_blank" href='arcgis-collector://?itemID=3b603af45ac34d0091ea9c011fe230d7'>
                         Open collector
                         </a>
                     </Button>
-                </Form>
+                </ButtonGroup>
                 
                 <div>
                 <ButtonGroup className="toggleButtons">
