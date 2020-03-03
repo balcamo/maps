@@ -25,6 +25,7 @@ div,p{
 }
 .toggleButtons{
   align-content: left;
+  padding-top: 3px;
   position:left;
 }
 

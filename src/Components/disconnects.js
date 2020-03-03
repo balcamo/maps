@@ -22,7 +22,7 @@ class Disconnects extends Component {
           returnedDisconnects:[],
           loading: false,
           esriEndpoint:'',
-          list:true,
+          list:true
         };
         this.toggleDropDown = this.toggleDropDown.bind(this);
         this.toggleLoading = this.toggleLoading.bind(this);
@@ -42,10 +42,9 @@ class Disconnects extends Component {
     
     InitMap(e,refresh) {
         e.preventDefault();
-        this.toggleLoading();
-        //this.cleanEsri();
 
         console.log('in change function '+this.state.selectedState);
+        this.toggleLoading();
         this.getSB(refresh);
         
     }
@@ -67,6 +66,7 @@ class Disconnects extends Component {
         })
         .then(res => res.json())
         .then((data) => {
+
             console.log(data);
             if(data.length===0){
                 alert("There are no current disconnects for the criteria");
@@ -184,7 +184,8 @@ class Disconnects extends Component {
                 </header>
                 <ButtonGroup>
                     
-                    <Button type="submit" onClick={e=>this.InitMap(e,false)}>Initialize Map</Button>
+                    <Button type="submit" 
+                        onClick={e=>{if(window.confirm("By initializing the map you will clear any data on the map.\nDo you want to continue ?")){this.InitMap(e,false)}}}>Initialize Map</Button>
                     <Button type="submit" onClick={e=>this.InitMap(e,true)}>Refresh Map</Button>
                     <Button><a target="_blank" href='arcgis-collector://?itemID=3b603af45ac34d0091ea9c011fe230d7'>
                         Open collector
@@ -199,7 +200,9 @@ class Disconnects extends Component {
                     <Button id="mapTooltip" onClick={e=>this.setState({list:false})}><i class="fa fa-map fa-lg"></i></Button>
                     <UncontrolledTooltip  placement="top" target="mapTooltip">Map View</UncontrolledTooltip >
                 </ButtonGroup>
-                    {
+                {
+                    this.state.loading ? <LoadingSpinner /> : 
+                                
                         this.state.list ? 
                         <Table bordered dark hover>
                             <thead>
@@ -215,19 +218,18 @@ class Disconnects extends Component {
                             </tbody>
                         </Table> :
                         <div>
-                            {
-                                this.state.loading ? <LoadingSpinner /> : 
+                           
                                 
                                 <iframe className="webmap" frameborder="0" scrolling="yes" marginheight="0" marginwidth="0" 
                                     src="https://arcgis.com/apps/View/index.html?appid=62042b7e3c1e42918629aac10cbcca59">
                                     
                                 </iframe>
 
-                                //<WebMapView />
+                                {/* //<WebMapView /> */}
                                 
-                            }  
+                        
                         </div>
-                    }
+                }
                 </div>
                 
             </div>
