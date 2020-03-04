@@ -22,7 +22,8 @@ class Disconnects extends Component {
           returnedDisconnects:[],
           loading: false,
           esriEndpoint:'',
-          list:true
+          list:true,
+          disdata:""
         };
         this.toggleDropDown = this.toggleDropDown.bind(this);
         this.toggleLoading = this.toggleLoading.bind(this);
@@ -147,7 +148,7 @@ class Disconnects extends Component {
         .then((data) => {
             console.log(data);
             if(data.length===0){
-                alert("There are no current disconnects on the map");
+                //alert("There are no current disconnects on the map. Try initializing the map.");
                 this.setState({loading:false});
             }else{
                 this.setState({returnedDisconnects:[]});
@@ -160,18 +161,23 @@ class Disconnects extends Component {
            .catch(console.log);
     }
     render(){
-       
-    const disconnects=(
-            this.state.returnedDisconnects.map((item)=>
-                <tr key={item.attributes.FACILITYID}>
-                    <td>{item.attributes.cust_name}</td>
-                    <td>{item.attributes.ADDRESS}</td>
-                    <td>{item.attributes.FACILITYID}</td>
-                    <td>{item.attributes.total_amount_due}</td>
-                </tr>
+        var disconnects;
+        if(this.state.returnedDisconnects.length == 0){
+            disconnects = (
+                <p>There is not data to be returned from Esri. Try initializing the map.</p>
+                );
+        }  else {
+            disconnects = (
+                this.state.returnedDisconnects.map((item)=>
+                    <tr key={item.attributes.FACILITYID}>
+                        <td>{item.attributes.cust_name}</td>
+                        <td>{item.attributes.ADDRESS}</td>
+                        <td>{item.attributes.FACILITYID}</td>
+                        <td>{item.attributes.total_amount_due}</td>
+                    </tr>
+                )
             )
-    )
-        
+        }   
         return (
             <div>
                 <Breadcrumb className="Breadcrumbs">
