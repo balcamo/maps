@@ -75,7 +75,7 @@ class Disconnects extends Component {
                 this.setState({springbrookDisconnects:[]});
                 var tempdata=data;
                 
-                tempdata.map(val=>this.state.springbrookDisconnects.push(val.value));
+                tempdata.map(val=>this.state.springbrookDisconnects.push(val));
                 this.setState({ springbrookDisconnects:this.state.springbrookDisconnects})
             
                 
@@ -136,19 +136,18 @@ class Disconnects extends Component {
               },
         }).then(function(response) {
             if (response.ok) {
-            return response
+                return response
             } else {
-            var error = new Error(response.statusText);
-            error.response = response;
-            this.setState({loading:false});
-            throw error;
+                var error = new Error(response.statusText);
+                error.response = response;
+                this.setState({loading:false});
+                throw error;
             }
         })
         .then(res => res.json())
         .then((data) => {
             console.log(data);
             if(data.length===0){
-                //alert("There are no current disconnects on the map. Try initializing the map.");
                 this.setState({loading:false});
             }else{
                 this.setState({returnedDisconnects:[]});
@@ -169,11 +168,12 @@ class Disconnects extends Component {
         }  else {
             disconnects = (
                 this.state.returnedDisconnects.map((item)=>
-                    <tr key={item.attributes.FACILITYID}>
-                        <td>{item.attributes.cust_name}</td>
-                        <td>{item.attributes.ADDRESS}</td>
-                        <td>{item.attributes.FACILITYID}</td>
-                        <td>{item.attributes.total_amount_due}</td>
+                    <tr key={item.meterindex}>
+                        <td>{item.cust_name}</td>
+                        <td>{item.ADDRESS}</td>
+                        <td>{item.meterindex}</td>
+                        <td>{item.total_amount_due}</td>
+                        <td>{item.AccountIndex}</td>
                     </tr>
                 )
             )
@@ -217,6 +217,7 @@ class Disconnects extends Component {
                                     <td>Address</td>
                                     <td>Meter #</td>
                                     <td>Balance</td>
+                                    <td>UB Account</td>
                                 </tr>
                             </thead>
                             <tbody>
