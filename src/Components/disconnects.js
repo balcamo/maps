@@ -173,7 +173,7 @@ class Disconnects extends Component {
                         <td>{item.ADDRESS}</td>
                         <td>{item.meterindex}</td>
                         <td>{item.total_amount_due}</td>
-                        <td>{item.AccountIndex}</td>
+                        <td>{item.UbAccountIndex}</td>
                     </tr>
                 )
             )
