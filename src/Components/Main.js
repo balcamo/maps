@@ -3,6 +3,7 @@ import { Navbar } from 'reactstrap';
 import { BrowserRouter,Switch, Route,withRouter } from 'react-router-dom';
 import NavNav from './nav';
 import Disconnects from './disconnects';
+import WorkOrders from './workOrders';
 import Home from './Home';
 
 //import { actions } from 'react-redux-form';
@@ -22,7 +23,9 @@ class Main extends Component{
                 <BrowserRouter>
                     <Switch>
                         <Route path="/disconnects" component={Disconnects} />
-                        <Route path="/" render={Home} />
+                        <Route path="/workOrders" component={WorkOrders} />
+
+                        <Route path="/" component={Home} />
                     </Switch>
                 </BrowserRouter>
             </div>
