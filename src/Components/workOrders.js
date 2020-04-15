@@ -10,7 +10,7 @@ class WorkOrders extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          baseURL:urls.springbrook+'workOrder',
+          baseURL:urls.springbrook+'workorder/bystatus?status=In Progres',
           esriURL:urls.esriPage+'workOrders/',
           selectedState: 'In Progress',
           setState:false,
@@ -68,7 +68,7 @@ class WorkOrders extends Component {
         .then(res => res.json())
         .then((data) => {
 
-            console.log(data);
+            console.log(data[0]);
             if(data.length===0){
                 alert("There are no current workOrders for the criteria");
             }else{
@@ -80,7 +80,8 @@ class WorkOrders extends Component {
             
                 
             }
-            this.sendToEsri(refresh); 
+
+            //this.sendToEsri(refresh); 
         })
            .catch(console.log);
            

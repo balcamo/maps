@@ -5,7 +5,7 @@ import NavNav from './nav';
 import Disconnects from './disconnects';
 import WorkOrders from './workOrders';
 import Home from './Home';
-
+import Tools from './tools'
 //import { actions } from 'react-redux-form';
 //import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
@@ -24,7 +24,7 @@ class Main extends Component{
                     <Switch>
                         <Route path="/disconnects" component={Disconnects} />
                         <Route path="/workOrders" component={WorkOrders} />
-
+                        <Route path="/tools" component={Tools} />
                         <Route path="/" component={Home} />
                     </Switch>
                 </BrowserRouter>
