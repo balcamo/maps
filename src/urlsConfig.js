@@ -7,6 +7,7 @@ export const workMang='https://apiarydev-react-workmanagement.azurewebsites.net/
 export const esriPage='https://apiarydev-linux-iesri.azurewebsites.net/';
 export const springbrook='https://apiarydev-windows-ispringbrook.azurewebsites.net/api/';
 export const maps='https://apiarydev-react-maps.azurewebsites.net/';
+export const payments='https://apiarydev-react-payments.azurewebsites.net';
 
 //Test URLs
 // export const homePage='https://pandora.verawaterandpower.com/';
