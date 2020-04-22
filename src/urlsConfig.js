@@ -16,7 +16,9 @@ export const payments='https://apiarydev-react-payments.azurewebsites.net';
 // export const esriPage='https://apiarytest-linux-iesri.azurewebsites.net/';
 // export const springbrook='https://apiarytest-windows-ispringbrook.azurewebsites.net/api/';
 // export const maps='https://apiarytest-react-maps.azurewebsites.net/';
-// export const wufooBugs='https://pandora.verawaterandpower.com/bugs'
+// export const wufooBugs='https://pandora.verawaterandpower.com/bugs';
+// export const payments='https://apiarytest-react-payments.azurewebsites.net';
+
 // // This is the Azure auth congig for test
 // const adalConfig = {
 //  tenant: 'ebba2929-765b-48f7-8c03-9b450ed099ba',
