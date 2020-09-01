@@ -55,3 +55,12 @@ div,p{
     transform: rotate(360deg);
   }
 }
+@media only screen and (max-width: 600px) {
+  a .navText  {
+    display:none;
+  }
+  NavLink{
+    padding:none;
+    margin:none;
+  }
+}

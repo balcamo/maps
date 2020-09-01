@@ -13,8 +13,8 @@ class Home extends Component {
             </Breadcrumb>
             <h1>Maps</h1>
             <Button className="homeButtons" size="lg" href="/disconnects">Disconnects</Button>
-            {/* <Button className="homeButtons" size="lg" href="/workOrders">Work Orders</Button>
-            <Button className="homeButtons" size="lg" href="/tools" >Tools</Button> */}
+            <Button className="homeButtons" size="lg" href="/workOrders">Work Orders under dev</Button>
+            {/* <Button className="homeButtons" size="lg" href="/tools" >Tools</Button> */}
         </div>
     )
     }

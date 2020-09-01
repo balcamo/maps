@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.css'
 import 'bootstrap-social/bootstrap-social.css';
 import * as serviceWorker from './serviceWorker';
-/*import { runWithAdal } from 'react-adal';
+import { runWithAdal } from 'react-adal';
 import { authContext } from './AuthConfig';
 
 
@@ -32,7 +32,7 @@ import { authContext } from './AuthConfig';
 
 
 
-/*/ReactDOM.render(<App />, document.getElementById('root'));
+//ReactDOM.render(<App />, document.getElementById('root'));
 
 
 serviceWorker.unregister();

@@ -4,7 +4,7 @@ import {  ButtonGroup, Button, Form, Table, Breadcrumb, BreadcrumbItem,Uncontrol
 import LoadingSpinner from './LoadingSpinner';
 import * as urls from '../urlsConfig';
 import { WebMapView } from './WebMapViewer';
-
+import {getToken} from '../urlsConfig';
 
 class WorkOrders extends Component {
     constructor(props) {
@@ -23,7 +23,8 @@ class WorkOrders extends Component {
           loading: false,
           esriEndpoint:'',
           list:true,
-          disdata:""
+          disdata:"",
+          clientToken:getToken
         };
         this.toggleDropDown = this.toggleDropDown.bind(this);
         this.toggleLoading = this.toggleLoading.bind(this);
@@ -89,7 +90,7 @@ class WorkOrders extends Component {
     }
    
     sendToEsri(refresh){
-        var meters={"meters":this.state.springbrookworkOrders};
+        var meters={"meters":this.state.springbrookworkOrders,"token":this.state.clientToken};
         console.log(meters);
         if(refresh){
             var url = this.state.esriURL+'refresh';
