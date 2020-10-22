@@ -27,7 +27,7 @@ const adalConfig = {
 
 //Test URLs
 // export const homePage='https://pandora.verawaterandpower.com/';
-// export const wufuPage='https://apiarytest-linux-iwufoo.azurewebsites.net/';
+// export const wufooPage='https://apiarytest-linux-iwufoo.azurewebsites.net/';
 // export const workMang='https://apiarytest-react-workmanagement.azurewebsites.net/';
 // export const esriPage='https://apiarytest-linux-iesri.azurewebsites.net/';
 // export const springbrook='https://apiarytest-windows-ispringbrook.azurewebsites.net/api/';
