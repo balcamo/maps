@@ -9,20 +9,20 @@ import { AuthenticationContext, adalFetch, withAdalLogin } from 'react-adal';
 // export const maps='https://apiarydev-react-maps.azurewebsites.net/';
 // export const payments='https://apiarydev-react-payments.azurewebsites.net';
 
-const adalConfig = {
-    tenant: 'ebba2929-765b-48f7-8c03-9b450ed099ba',
-    clientId: 'cabc95af-1f4d-4f5c-8db0-03e462c2b3dd',
-    endpoints: {
-        api: 'cabc95af-1f4d-4f5c-8db0-03e462c2b3dd'
-    },
-    apiUrl: 'https://apiarydev-react-maps.azurewebsites.net/',
-    cacheLocation: 'localStorage'
-   };
-   export const authContext = new AuthenticationContext(adalConfig);
-   export const adalApiFetch = (fetch, url, options) =>
-       adalFetch(authContext, adalConfig.endpoints.api, fetch, adalConfig.apiUrl + url, options);
-   export const withAdalLoginApi = withAdalLogin(authContext, adalConfig.endpoints.api);
-   export const getToken =  authContext.getCachedToken(adalConfig.clientId);
+// const adalConfig = {
+//     tenant: 'ebba2929-765b-48f7-8c03-9b450ed099ba',
+//     clientId: 'cabc95af-1f4d-4f5c-8db0-03e462c2b3dd',
+//     endpoints: {
+//         api: 'cabc95af-1f4d-4f5c-8db0-03e462c2b3dd'
+//     },
+//     apiUrl: 'https://apiarydev-react-maps.azurewebsites.net/',
+//     cacheLocation: 'localStorage'
+//    };
+//    export const authContext = new AuthenticationContext(adalConfig);
+//    export const adalApiFetch = (fetch, url, options) =>
+//        adalFetch(authContext, adalConfig.endpoints.api, fetch, adalConfig.apiUrl + url, options);
+//    export const withAdalLoginApi = withAdalLogin(authContext, adalConfig.endpoints.api);
+//    export const getToken =  authContext.getCachedToken(adalConfig.clientId);
    
 
 //Test URLs
@@ -49,7 +49,7 @@ export const authContext = new AuthenticationContext(adalConfig);
 export const adalApiFetch = (fetch, url, options) =>
     adalFetch(authContext, adalConfig.endpoints.api, fetch, adalConfig.apiUrl + url, options);
 export const withAdalLoginApi = withAdalLogin(authContext, adalConfig.endpoints.api);
-
+export const getToken =  authContext.getCachedToken(adalConfig.clientId);
 
 
 // //Prod URLs
