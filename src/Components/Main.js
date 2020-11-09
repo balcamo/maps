@@ -12,8 +12,6 @@ import Tools from './tools'
 
 class Main extends Component{
 
-
-    
     render(){
         return(
             <div className="container">

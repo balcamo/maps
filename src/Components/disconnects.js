@@ -3,8 +3,6 @@ import fetch from 'isomorphic-fetch';
 import {  ButtonGroup, Button, Form, Table, Breadcrumb, BreadcrumbItem,UncontrolledTooltip   } from 'reactstrap';
 import LoadingSpinner from './LoadingSpinner';
 import * as urls from '../urlsConfig';
-import { WebMapView } from './WebMapViewer';
-
 
 class Disconnects extends Component {
     constructor(props) {
@@ -189,7 +187,6 @@ class Disconnects extends Component {
                     <h1>Disconnects</h1>
                 </header>
                 <ButtonGroup>
-                    
                     <Button type="submit" 
                         onClick={e=>{if(window.confirm("By initializing the map you will clear any data on the map.\nDo you want to continue ?")){this.InitMap(e,false)}}}>Initialize Map</Button>
                     <Button type="submit" onClick={e=>this.InitMap(e,true)}>Refresh Map</Button>
@@ -198,7 +195,6 @@ class Disconnects extends Component {
                         </a>
                     </Button>
                 </ButtonGroup>
-                
                 <div>
                 <ButtonGroup className="toggleButtons">
                     <Button id="listTooltip" onClick={e=>this.setState({list:true})}><i class="fa fa-list fa-lg"></i></Button>
@@ -208,7 +204,6 @@ class Disconnects extends Component {
                 </ButtonGroup>
                 {
                     this.state.loading ? <LoadingSpinner /> : 
-                                
                         this.state.list ? 
                         <Table bordered dark hover>
                             <thead>
@@ -225,16 +220,10 @@ class Disconnects extends Component {
                             </tbody>
                         </Table> :
                         <div>
-                           
-                                
                                 <iframe className="webmap" frameborder="0" scrolling="yes" marginheight="0" marginwidth="0" 
                                     src="https://arcgis.com/apps/View/index.html?appid=62042b7e3c1e42918629aac10cbcca59">
                                     
-                                </iframe>
-
-                                {/* //<WebMapView /> */}
-                                
-                        
+                                </iframe>                      
                         </div>
                 }
                 </div>

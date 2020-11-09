@@ -7,6 +7,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.css'
 import 'bootstrap-social/bootstrap-social.css';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import * as serviceWorker from './serviceWorker';
 import { runWithAdal } from 'react-adal';
 import { authContext } from './AuthConfig';

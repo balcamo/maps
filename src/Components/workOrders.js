@@ -3,8 +3,10 @@ import fetch from 'isomorphic-fetch';
 import {  ButtonGroup, Button, Form, Table, Breadcrumb, BreadcrumbItem,UncontrolledTooltip   } from 'reactstrap';
 import LoadingSpinner from './LoadingSpinner';
 import * as urls from '../urlsConfig';
-import { WebMapView } from './WebMapViewer';
 import {getToken} from '../urlsConfig';
+import paginationFactory from 'react-bootstrap-table2-paginator';
+import BootstrapTable from 'react-bootstrap-table-next';
+
 
 class WorkOrders extends Component {
     constructor(props) {
@@ -28,6 +30,7 @@ class WorkOrders extends Component {
         };
         this.toggleDropDown = this.toggleDropDown.bind(this);
         this.toggleLoading = this.toggleLoading.bind(this);
+        this.getDate = this.getDate.bind(this);
 
       }
 
@@ -113,7 +116,6 @@ class WorkOrders extends Component {
             var url = this.state.esriURL+'init';
         }
 		for(var i=0;i<this.state.springbrookworkOrders.length;i++){
-           // console.log(i);
 			var wOrders=this.state.springbrookworkOrders[i];
             meters.workOrders=wOrders;
             console.log(wOrders);
@@ -151,7 +153,6 @@ class WorkOrders extends Component {
     
     getFromEsri(){
         var workOrders=this.state.springbrookworkOrders;
-        //console.log(workOrders);
         fetch(this.state.esriURL, {
             method:"GET",
             headers: {
@@ -169,12 +170,10 @@ class WorkOrders extends Component {
         })
         .then(res => res.json())
         .then((data) => {
-            //console.log(data);
             if(data.length===0){
                 this.setState({loading:false});
             }else{
                 this.setState({returnedworkOrders:[]});
-                //console.log(data);
                 this.setState({loading:false, returnedworkOrders:data})
 
                 console.log(this.state.returnedworkOrders);
@@ -182,24 +181,39 @@ class WorkOrders extends Component {
             })
            .catch(console.log);
     }
+    getDate(cell, row){
+        var creation = new Date(cell);
+        return creation.getMonth()+"/"+creation.getDate()+"/"+creation.getFullYear();
+    }
     render(){
-        var workOrders;
-        if(this.state.returnedworkOrders.length == 0){
-            workOrders = (
-                <p>There is not data to be returned from Esri. Try initializing the map.</p>
-                );
-        }  else {
-            workOrders = (
-                this.state.returnedworkOrders.map((item)=>
-                    <tr key={item.WorkOrderIndex}>
-                        <td>{item.deptCode}</td>
-                        <td>{item.address1}</td>
-                        <td>{item.description}</td>
-                        <td>{item.notes}</td>
-                    </tr>
-                )
-            )
-        }   
+        const columns=[
+            { 
+                dataField: 'WorkOrderIndex',
+                text: 'W.O. Num',
+                sort:true
+            },{ 
+                dataField: 'creationDate',
+                text: 'Creation Date',
+                sort:true,
+                formatter:this.getDate
+            },{ 
+                dataField: 'deptCode',
+                text: 'Department',
+                sort:true
+            },{ 
+                dataField: 'description',
+                text: 'Description',
+            },{ 
+                dataField: 'CrewStatus',
+                text: 'Crew Status',
+                sort:true
+            },{ 
+                dataField: 'Comments',
+                text: 'Crew Comments',
+            },
+        ]
+        
+    
         return (
             <div>
                 <Breadcrumb className="Breadcrumbs">
@@ -210,52 +224,31 @@ class WorkOrders extends Component {
                 <header >
                     <h1>Work Orders</h1>
                 </header>
-                <ButtonGroup>
-                    
+                <ButtonGroup className="toggleButtons">
+                    {/* TODO: Make it so items get added to the map on
+                    refresh and not just initialized */}
                     <Button type="submit" 
                         onClick={e=>{if(window.confirm("By initializing the map you will clear any data on the map.\nDo you want to continue ?")){this.InitMap(e,false)}}}>Initialize Map</Button>
-                    <Button type="submit" onClick={e=>this.InitMap(e,true)}>Refresh Map</Button>
+                    <Button  type="submit" onClick={e=>this.InitMap(e,true)}>Refresh Map</Button>
                     <Button><a target="_blank" href='arcgis-collector://?itemID=bdff0372af4349179e9e41b6e954881d'>
-                        Open collector
+                    <i class="fa fa-map fa-lg"/> Open collector
                         </a>
                     </Button>
                 </ButtonGroup>
+                <br/>
                 
                 <div>
-                <ButtonGroup className="toggleButtons">
-                    <Button id="listTooltip" onClick={e=>this.setState({list:true})}><i class="fa fa-list fa-lg"></i></Button>
-                    <UncontrolledTooltip  placement="top" target="listTooltip">List View</UncontrolledTooltip >
-                    <Button id="mapTooltip" onClick={e=>this.setState({list:false})}><i class="fa fa-map fa-lg"></i></Button>
-                    <UncontrolledTooltip  placement="top" target="mapTooltip">Map View</UncontrolledTooltip >
-                </ButtonGroup>
                 {
                     this.state.loading ? <LoadingSpinner /> : 
-                                
-                        this.state.list ? 
-                        <Table bordered dark hover>
-                            <thead>
-                                <tr>
-                                    <td>Dept. Code</td>
-                                    <td>Address</td>
-                                    <td>Description</td>
-                                    <td>Notes</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {workOrders}
-                            </tbody>
-                        </Table> :
-                        <div>
-                                
-                                <iframe className="webmap" frameborder="0" scrolling="yes" marginheight="0" marginwidth="0" 
-                                    src="https://arcgis.com/apps/View/index.html?appid=5749d49d8d4f4e1d8a0c3f6cfb8e0c01">
-                                    
-                                </iframe> 
-
-                                {/* <WebMapView /> */}
-                                
-                        
-                        </div>
+                        <BootstrapTable 
+                            keyField='WorkOrderIndex' 
+                            data={ this.state.returnedworkOrders } 
+                            columns={ columns } 
+                            striped
+                            hover
+                            className="table"
+                            pagination={ paginationFactory() }
+                            />
                 }
                 </div>
                 
